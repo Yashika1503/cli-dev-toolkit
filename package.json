@@ -1,0 +1,28 @@
+{
+  "name": "cli-dev-toolkit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yashika1503/cli-dev-toolkit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Yashika1503/cli-dev-toolkit/issues"
+  },
+  "homepage": "https://github.com/Yashika1503/cli-dev-toolkit#readme",
+  "dependencies": {
+    "axios": "^1.18.1",
+    "chalk": "^5.6.2",
+    "commander": "^15.0.0",
+    "express": "^5.2.1",
+    "glob": "^13.0.6"
+  }
+}
