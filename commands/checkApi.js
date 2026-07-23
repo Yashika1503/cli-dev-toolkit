@@ -1,48 +1,43 @@
-import axios from "axios";
-import chalk from "chalk";
-import { performance } from "node:perf_hooks";
+import apiChecker from "../services/apiChecker.js";
+import * as logger from "../utils/logger.js";
 
 export default async function checkApi(url, options) {
     try {
-        const start = performance.now();
-
-        const response = await axios({
-            method: options.method,
-            url
-        });
-
-        const end = performance.now();
-
-        const duration = (end - start).toFixed(2);
-
-        const contentType = response.headers["content-type"] ?? "Unknown";
-
-        const sizeInBytes = Buffer.byteLength(
-            JSON.stringify(response.data),
-            "utf8"
+        const result = await apiChecker(
+            url,
+            options.method
         );
 
-        const sizeInKB = (sizeInBytes / 1024).toFixed(2);
+        logger.success("✓ API is reachable\n");
 
-        console.log(chalk.green("✓ API is reachable\n"));
+        logger.info("URL", result.url);
+        logger.info("Method", result.method);
+        logger.info(
+            "Status",
+            `${result.status} ${result.statusText}`
+        );
+        logger.info(
+            "Time",
+            `${result.responseTime} ms`
+        );
+        logger.info(
+            "Content-Type",
+            result.contentType
+        );
+        logger.info(
+            "Size",
+            `${result.sizeInKB} KB`
+        );
+    } catch (err) {
+        logger.error("✗ Request failed");
 
-        console.log(`URL           ${url}`);
-        console.log(`Method        ${options.method}`);
-        console.log(`Status        ${response.status} ${response.statusText}`);
-        console.log(`Time          ${duration} ms`);
-        console.log(`Content-Type  ${contentType}`);
-        console.log(`Size          ${sizeInKB} KB`);
-
-    } catch (error) {
-    console.log(chalk.red("✗ Request failed"));
-
-        if (error.response) {
-            console.log(`Status: ${error.response.status}`);
-            console.log(`Message: ${error.response.statusText}`);
-        } else if (error.request) {
-            console.log("No response received from the server.");
+        if (err.response) {
+            logger.info(
+                "Status",
+                `${err.response.status} ${err.response.statusText}`
+            );
         } else {
-            console.log(error.message);
+            logger.error(err.message);
         }
     }
 }
