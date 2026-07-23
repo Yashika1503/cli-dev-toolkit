@@ -13,6 +13,7 @@ program
 program
     .command("check-api <url>")
     .description("Check an API endpoint")
+    .option("-m, --method <method>", "HTTP method", "GET")
     .action(checkApi);
 
 program.parse();

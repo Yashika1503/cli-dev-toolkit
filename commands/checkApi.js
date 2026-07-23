@@ -2,11 +2,14 @@ import axios from "axios";
 import chalk from "chalk";
 import { performance } from "node:perf_hooks";
 
-export default async function checkApi(url) {
+export default async function checkApi(url, options) {
     try {
         const start = performance.now();
 
-        const response = await axios.get(url);
+        const response = await axios({
+            method: options.method,
+            url
+        });
 
         const end = performance.now();
 
@@ -24,14 +27,22 @@ export default async function checkApi(url) {
         console.log(chalk.green("✓ API is reachable\n"));
 
         console.log(`URL           ${url}`);
+        console.log(`Method        ${options.method}`);
         console.log(`Status        ${response.status} ${response.statusText}`);
         console.log(`Time          ${duration} ms`);
         console.log(`Content-Type  ${contentType}`);
         console.log(`Size          ${sizeInKB} KB`);
 
     } catch (error) {
-        console.log(chalk.red("✗ Request failed"));
+    console.log(chalk.red("✗ Request failed"));
 
-        console.log(error.message);
+        if (error.response) {
+            console.log(`Status: ${error.response.status}`);
+            console.log(`Message: ${error.response.statusText}`);
+        } else if (error.request) {
+            console.log("No response received from the server.");
+        } else {
+            console.log(error.message);
+        }
     }
 }
