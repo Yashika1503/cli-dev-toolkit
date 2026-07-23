@@ -14,6 +14,7 @@ program
     .command("check-api <url>")
     .description("Check an API endpoint")
     .option("-m, --method <method>", "HTTP method", "GET")
+    .option("-t, --timeout <ms>", "Request timeout in milliseconds", "5000")
     .action(checkApi);
 
 program.parse();

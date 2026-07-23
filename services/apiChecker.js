@@ -1,12 +1,13 @@
 import axios from "axios";
 import { performance } from "node:perf_hooks";
 
-export default async function apiChecker(url, method = "GET") {
+export default async function apiChecker({ url, method = "GET", timeout = 5000 }) {
     const start = performance.now();
 
     const response = await axios({
         url,
-        method
+        method,
+        timeout
     });
 
     const end = performance.now();
@@ -22,6 +23,7 @@ export default async function apiChecker(url, method = "GET") {
         url,
         method,
         status: response.status,
+        timeout,
         statusText: response.statusText,
         responseTime,
         contentType:

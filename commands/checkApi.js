@@ -3,10 +3,11 @@ import * as logger from "../utils/logger.js";
 
 export default async function checkApi(url, options) {
     try {
-        const result = await apiChecker(
+        const result = await apiChecker({
             url,
-            options.method
-        );
+            method: options.method,
+            timeout: Number(options.timeout)
+        });
 
         logger.success("✓ API is reachable\n");
 
@@ -16,6 +17,7 @@ export default async function checkApi(url, options) {
             "Status",
             `${result.status} ${result.statusText}`
         );
+        logger.info("Timeout", `${result.timeout} ms`);
         logger.info(
             "Time",
             `${result.responseTime} ms`
@@ -30,6 +32,11 @@ export default async function checkApi(url, options) {
         );
     } catch (err) {
         logger.error("✗ Request failed");
+
+        if (err.code === "ECONNABORTED") {
+            logger.error("Request timed out.");
+            return;
+        }
 
         if (err.response) {
             logger.info(
