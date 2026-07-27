@@ -15,6 +15,15 @@ program
     .description("Check an API endpoint")
     .option("-m, --method <method>", "HTTP method", "GET")
     .option("-t, --timeout <ms>", "Request timeout in milliseconds", "5000")
+    .option(
+    "-H, --header <header>",
+    "Custom request header",
+    (value, previous) => {
+        previous.push(value);
+        return previous;
+    },
+    []
+)
     .action(checkApi);
 
 program.parse();

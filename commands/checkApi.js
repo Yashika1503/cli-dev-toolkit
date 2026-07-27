@@ -6,10 +6,12 @@ export default async function checkApi(url, options) {
         const result = await apiChecker({
             url,
             method: options.method,
-            timeout: Number(options.timeout)
+            timeout: Number(options.timeout),
+            headers: options.header
         });
 
-        logger.success("✓ API is reachable\n");
+        logger.success("✓ API is reachable");
+        console.log();
 
         logger.info("URL", result.url);
         logger.info("Method", result.method);
@@ -30,6 +32,14 @@ export default async function checkApi(url, options) {
             "Size",
             `${result.sizeInKB} KB`
         );
+
+        if (Object.keys(result.requestHeaders).length > 0) {
+            console.log("\nRequest Headers");
+
+            for (const [key, value] of Object.entries(result.requestHeaders)) {
+                logger.info(key, value);
+            }
+        }
     } catch (err) {
         logger.error("✗ Request failed");
 

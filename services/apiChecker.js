@@ -1,13 +1,32 @@
 import axios from "axios";
 import { performance } from "node:perf_hooks";
 
-export default async function apiChecker({ url, method = "GET", timeout = 5000 }) {
+function parseHeaders(headerArray) {
+    const headers = {};
+
+    for (const header of headerArray) {
+        const [key, ...value] = header.split(":");
+
+        headers[key.trim()] = value.join(":").trim();
+    }
+
+    return headers;
+}
+
+export default async function apiChecker({
+    url,
+    method = "GET",
+    timeout = 5000,
+    headers = []
+}) {
+    const requestHeaders = parseHeaders(headers);
     const start = performance.now();
 
     const response = await axios({
         url,
         method,
-        timeout
+        timeout,
+        headers: requestHeaders
     });
 
     const end = performance.now();
@@ -28,6 +47,7 @@ export default async function apiChecker({ url, method = "GET", timeout = 5000 }
         responseTime,
         contentType:
             response.headers["content-type"] ?? "Unknown",
-        sizeInKB: (sizeInBytes / 1024).toFixed(2)
+        sizeInKB: (sizeInBytes / 1024).toFixed(2),
+        requestHeaders
     };
 }
