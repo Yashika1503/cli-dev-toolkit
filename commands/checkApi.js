@@ -7,7 +7,8 @@ export default async function checkApi(url, options) {
             url,
             method: options.method,
             timeout: Number(options.timeout),
-            headers: options.header
+            headers: options.header,
+            bodyFile: options.bodyFile
         });
 
         logger.success("✓ API is reachable");
@@ -35,11 +36,22 @@ export default async function checkApi(url, options) {
 
         if (Object.keys(result.requestHeaders).length > 0) {
             console.log("\nRequest Headers");
+            console.log("----------------");
 
             for (const [key, value] of Object.entries(result.requestHeaders)) {
                 logger.info(key, value);
             }
         }
+
+        if (result.requestBody) {
+            console.log("\nRequest Body");
+            console.log("------------");
+
+            console.log(
+                JSON.stringify(result.requestBody, null, 2)
+            );
+        }
+
     } catch (err) {
         logger.error("✗ Request failed");
 
