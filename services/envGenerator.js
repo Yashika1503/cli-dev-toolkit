@@ -4,11 +4,7 @@ import { readFile, writeFile } from "node:fs/promises";
 const port = process.env.PORT;
 
 export default async function generateEnv() {
-    const files = await glob("**/*.js", {
-        ignore: [
-            "node_modules/**"
-        ]
-    });
+    const files = await glob("**/*.{js,jsx,ts,tsx,mjs,cjs}", {ignore: ["node_modules/**"]});
 
     const envVars = new Set();
 
@@ -29,5 +25,12 @@ export default async function generateEnv() {
     const envContent = variables.map(variable => `${variable}=`);
 
     const output = envContent.join("\n") + "\n";
+
+    if (variables.length === 0) {
+        throw new Error(
+            "No environment variables found."
+        );
+    }
+
     await writeFile(".env.example", output);
 }
