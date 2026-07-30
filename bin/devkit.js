@@ -2,6 +2,7 @@
 
 import { Command } from "commander";
 import checkApi from "../commands/checkApi.js";
+import genEnv from "../commands/genEnv.js";
 
 const program = new Command();
 
@@ -29,5 +30,10 @@ program
     "Path to a JSON file containing the request body"
     )
     .action(checkApi);
+
+program
+    .command("gen-env")
+    .description("Generate a .env.example file")
+    .action(genEnv);
 
 program.parse();
