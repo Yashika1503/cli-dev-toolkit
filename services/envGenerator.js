@@ -1,5 +1,5 @@
 import { glob } from "glob";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 
 const port = process.env.PORT;
 
@@ -26,5 +26,8 @@ export default async function generateEnv() {
 
     const variables = [...envVars].sort();
 
-    console.log(variables);
+    const envContent = variables.map(variable => `${variable}=`);
+
+    const output = envContent.join("\n") + "\n";
+    await writeFile(".env.example", output);
 }
