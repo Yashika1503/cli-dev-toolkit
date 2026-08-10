@@ -3,6 +3,7 @@
 import { Command } from "commander";
 import checkApi from "../commands/checkApi.js";
 import genEnv from "../commands/genEnv.js";
+import diffJson from "../commands/diffJson.js";
 
 const program = new Command();
 
@@ -35,5 +36,10 @@ program
     .command("gen-env")
     .description("Generate a .env.example file")
     .action(genEnv);
+
+program
+    .command("diff-json <file1> <file2>")
+    .description("Compare two JSON files")
+    .action(diffJson);
 
 program.parse();
