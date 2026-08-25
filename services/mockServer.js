@@ -46,8 +46,11 @@ export default async function startMockServer(schemaFile, port) {
     }
 
     app.listen(port, () => {
-        console.log(
-            `Mock server running on http://localhost:${port}`
-        );
+        console.log(`Mock server running on http://localhost:${port}`);
+        console.log("\nRoutes:");
+
+        for (const route of Object.keys(schema)) {
+            console.log(`  ${route}`);
+        }
     });
 }

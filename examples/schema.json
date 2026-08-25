@@ -8,5 +8,11 @@
         "id": 1,
         "name": "Laptop",
         "price": 50000
+    },
+    "POST /users": {
+        "message": "User created"
+    },
+    "DELETE /users": {
+        "message": "User deleted"
     }
 }
