@@ -1,0 +1,12 @@
+{
+    "GET /users": {
+        "id": 1,
+        "name": "Yashika",
+        "role": "developer"
+    },
+    "GET /products": {
+        "id": 1,
+        "name": "Laptop",
+        "price": 50000
+    }
+}

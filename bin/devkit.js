@@ -4,6 +4,7 @@ import { Command } from "commander";
 import checkApi from "../commands/checkApi.js";
 import genEnv from "../commands/genEnv.js";
 import diffJson from "../commands/diffJson.js";
+import mockServer from "../commands/mockServer.js";
 
 const program = new Command();
 
@@ -41,5 +42,11 @@ program
     .command("diff-json <file1> <file2>")
     .description("Compare two JSON files")
     .action(diffJson);
+
+program
+    .command("mock-server <schema>")
+    .description("Start a mock API server from a JSON schema")
+    .option("-p, --port <port>", "Server port", "3000")
+    .action(mockServer);
 
 program.parse();
