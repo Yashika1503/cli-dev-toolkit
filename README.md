@@ -1,8 +1,12 @@
 # CLI Developer Toolkit
 
-A Node.js command-line toolkit that brings together common developer utilities into a single CLI.
+[![npm version](https://img.shields.io/npm/v/cli-dev-toolkit.svg)](https://www.npmjs.com/package/cli-dev-toolkit)
+[![npm downloads](https://img.shields.io/npm/dm/cli-dev-toolkit.svg)](https://www.npmjs.com/package/cli-dev-toolkit)
+[![License](https://img.shields.io/npm/l/cli-dev-toolkit.svg)](https://www.npmjs.com/package/cli-dev-toolkit)
 
-Instead of using separate scripts or tools for API testing, environment variable discovery, JSON comparison, and API mocking, this project provides them through one command:
+A Node.js command-line toolkit that brings together common developer utilities into a single, installable CLI.
+
+Instead of using separate scripts or tools for API testing, environment variable discovery, JSON comparison, and API mocking, **CLI Developer Toolkit** provides them through one command:
 
 ```bash
 devkit
@@ -19,29 +23,68 @@ devkit
 
 ---
 
-## Tech Stack
+## Quick Start
 
-- **Node.js** — Runtime
-- **Commander.js** — CLI command and argument handling
-- **Axios** — HTTP requests
-- **Express** — Mock API server
-- **Chalk** — Terminal output formatting
-- **Glob** — Source-code file discovery
-- **ES Modules** — JavaScript module system
+Install the CLI globally from npm:
+
+```bash
+npm install -g cli-dev-toolkit
+```
+
+Verify the installation:
+
+```bash
+devkit --help
+```
+
+Then use any of the available utilities:
+
+```bash
+devkit check-api https://jsonplaceholder.typicode.com/posts
+```
+
+```bash
+devkit gen-env
+```
+
+```bash
+devkit diff-json old.json new.json
+```
+
+```bash
+devkit mock-server examples/schema.json
+```
 
 ---
 
 # Installation
 
-## Clone the repository
+## From npm
+
+Install the latest version globally:
+
+```bash
+npm install -g cli-dev-toolkit
+```
+
+Verify the installation:
+
+```bash
+devkit --help
+```
+
+You can also run the CLI using `npx`:
+
+```bash
+npx cli-dev-toolkit --help
+```
+
+## From source
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/Yashika1503/cli-dev-toolkit.git
-```
-
-Navigate into the project:
-
-```bash
 cd cli-dev-toolkit
 ```
 
@@ -51,25 +94,10 @@ Install dependencies:
 npm install
 ```
 
-Install the CLI globally from the project:
+Install the CLI globally from the local project:
 
 ```bash
 npm install -g .
-```
-
-Verify the installation:
-
-```bash
-devkit --help
-```
-
-You should see the available commands:
-
-```text
-check-api
-gen-env
-diff-json
-mock-server
 ```
 
 ---
@@ -148,7 +176,7 @@ devkit check-api https://api.example.com \
   --header "Authorization: Bearer TOKEN"
 ```
 
-> **PowerShell:** If using PowerShell, enter each option on the same line or use PowerShell's backtick continuation character instead of `\`.
+> **PowerShell:** When using PowerShell, enter the options on the same line or use PowerShell's backtick (`) for line continuation instead of `\`.
 
 ### Send a JSON request body
 
@@ -219,9 +247,9 @@ Duplicate environment variables are removed automatically.
 
 ### Why use it?
 
-When working on a project, environment variables are often required but should not be committed with their real values.
+Environment variables often contain configuration or secrets that should not be committed to a repository.
 
-Instead of manually creating a `.env.example`, this command can discover the variables used by the project automatically.
+Instead of manually creating a `.env.example`, this command discovers the variables used by the project and generates a template automatically.
 
 ### Important
 
@@ -310,13 +338,13 @@ If both files are identical:
 
 ### Error handling
 
-The command also handles:
+The command handles common errors including:
 
 - Missing files
 - Invalid JSON
 - Invalid file contents
 
-For example:
+Example:
 
 ```text
 ✗ File not found: old.json
@@ -356,7 +384,7 @@ http://localhost:3000
 
 ### Custom port
 
-You can specify a different port:
+Specify a different port using `--port`:
 
 ```bash
 devkit mock-server examples/schema.json --port 4000
@@ -402,10 +430,10 @@ The mock server dynamically creates the corresponding Express routes.
 This produces:
 
 ```text
-GET    /users
-GET    /products
-POST   /users
-DELETE /users
+GET     /users
+GET     /products
+POST    /users
+DELETE  /users
 ```
 
 ### Example request
@@ -436,7 +464,7 @@ The mock server supports:
 
 The schema is read and parsed by Node.js.
 
-Each entry is then split into:
+Each entry is split into:
 
 ```text
 HTTP method
@@ -459,7 +487,7 @@ path = /users
 
 The corresponding Express route is then created dynamically.
 
-This allows a single schema to define multiple mock endpoints without manually writing Express route handlers.
+This allows a single JSON schema to define multiple mock endpoints without manually writing individual Express route handlers.
 
 ---
 
@@ -530,9 +558,9 @@ The `commands/` directory handles:
 
 ### Services
 
-The `services/` directory contains the actual application logic.
+The `services/` directory contains the core application logic.
 
-This separation keeps the CLI layer thin and makes the functionality easier to maintain and test.
+This keeps the CLI layer separate from the functionality performed by each command.
 
 ### Utilities
 
@@ -569,11 +597,11 @@ Axios provides a straightforward API for making HTTP requests while handling:
 
 Express makes it simple to dynamically create HTTP routes for the mock server.
 
-Instead of manually creating a server for every mock API, the toolkit can generate routes directly from a JSON schema.
+Instead of manually creating a server for every mock API, the toolkit generates routes directly from a JSON schema.
 
 ## Why separate commands and services?
 
-Keeping CLI handling separate from business logic makes the application easier to understand and extend.
+Keeping CLI handling separate from application logic makes the project easier to understand, maintain, and extend.
 
 For example:
 
@@ -606,29 +634,29 @@ Install dependencies:
 npm install
 ```
 
-During development, the CLI can be installed globally from the local project:
+Install the local package globally for development:
 
 ```bash
 npm install -g .
 ```
 
-After making changes, reinstall if necessary:
-
-```bash
-npm install -g .
-```
-
-Then test:
+Run:
 
 ```bash
 devkit --help
+```
+
+After making changes, reinstall the package if necessary:
+
+```bash
+npm install -g .
 ```
 
 ---
 
 # Example Workflow
 
-A typical workflow might look like:
+A typical developer workflow might look like this:
 
 ### Check an API
 
@@ -636,7 +664,7 @@ A typical workflow might look like:
 devkit check-api https://api.example.com/users
 ```
 
-### Generate environment variable template
+### Generate an environment template
 
 ```bash
 devkit gen-env
@@ -654,7 +682,7 @@ devkit diff-json config.old.json config.new.json
 devkit mock-server examples/schema.json
 ```
 
-The toolkit is designed to keep these common developer tasks available through one consistent CLI.
+The toolkit provides these common developer utilities through one consistent command-line interface.
 
 ---
 
@@ -670,7 +698,7 @@ The toolkit provides user-friendly error messages for common failures, including
 - Invalid mock-server schemas
 - Unsupported HTTP methods
 
-Instead of exposing raw Node.js errors whenever possible, the CLI reports concise messages that are easier to understand from the terminal.
+The CLI reports concise error messages instead of exposing unnecessary implementation details whenever possible.
 
 ---
 
@@ -685,11 +713,30 @@ Possible future additions include:
 - Request logging for the mock server
 - Configuration files
 - Additional API testing options
-- Publishing the package to npm
-- Automated tests with a testing framework
+- Automated tests
 - CI/CD with GitHub Actions
 
-These features are intentionally outside the current core implementation.
+---
+
+# npm Package
+
+The CLI is published on npm as:
+
+```text
+cli-dev-toolkit
+```
+
+Install it with:
+
+```bash
+npm install -g cli-dev-toolkit
+```
+
+Then run:
+
+```bash
+devkit --help
+```
 
 ---
 
@@ -707,7 +754,7 @@ This project was built to gain practical experience with:
 - HTTP requests
 - Dynamic route generation
 - CLI argument and option handling
-- npm package structure
+- npm package development and publishing
 - Git and GitHub workflows
 
 ---
@@ -718,10 +765,7 @@ ISC
 
 ---
 
-# Author
+# Links
 
-**Yashika Gaur**
-
-GitHub:
-
-https://github.com/Yashika1503
+- **npm:** https://www.npmjs.com/package/cli-dev-toolkit
+- **GitHub:** https://github.com/Yashika1503/cli-dev-toolkit
